@@ -1,0 +1,243 @@
+{
+  "hero": {
+
+    "name": ["Yokubov","Shamsiddin"],
+    "status": "AVAILABLE FOR FREELANCE",
+    "location": "Ташкент, Узбекистан",
+    "title": "Маркетолог стратег"
+  },
+  "about": {
+    "title": ["Стратегия Подход" , "Экспорт"],
+    "subtitle": "I'M AN INNOVATIVE DESIGNER AND DIGITAL ARTIST IN TOKYO",
+    "description": "My passion for minimalist aesthetics, elegant typography, and intuitive design shines through in my work."
+  },
+  "expertise": {
+    "title": "МОЙ ОПЫТ",
+    "content": [
+      {
+        "id": 1,
+        "number": "(1)",
+        "title": "Аудит",
+        "description": "Craft intuitive navigation that makes features accessible. Choose layouts and graphics that fit your app's personality.",
+        "price": "$3,999",
+        "fullDescription": "App design is one my high end skill that i give to my customers.",
+        "features": [
+          "Web Application Design",
+          "Responsive Design",
+          "Animation Effects"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
+      },
+      {
+        "id": 2,
+        "number": "(2)",
+        "title": "Анализ рынка",
+        "description": "Craft intuitive navigation that makes features accessible. Choose layouts and graphics that fit your app's personality.",
+        "price": "$3,999",
+        "fullDescription": "App design is one my high end skill that i give to my customers.",
+        "features": [
+          "Web Application Design",
+          "Responsive Design",
+          "Animation Effects"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
+      },
+      {
+        "id": 3,
+        "number": "(3)",
+        "title": "Продвижение продукции",
+        "description": "Craft intuitive navigation that makes features accessible. Choose layouts and graphics that fit your app's personality.",
+        "price": "$3,999",
+        "fullDescription": "App design is one my high end skill that i give to my customers.",
+        "features": [
+          "Web Application Design",
+          "Responsive Design",
+          "Animation Effects"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
+      },
+      {
+        "id": 4,
+        "number": "(4)",
+        "title": "Экспорт продукции",
+        "description": "Craft intuitive navigation that makes features accessible. Choose layouts and graphics that fit your app's personality.",
+        "price": "$3,999",
+        "fullDescription": "App design is one my high end skill that i give to my customers.",
+        "features": [
+          "Web Application Design",
+          "Responsive Design",
+          "Animation Effects"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
+      },
+      {
+        "id": 5,
+        "number": "(5)",
+        "title": "Переговоры и сопровождение сделок",
+        "description": "Craft intuitive navigation that makes features accessible. Choose layouts and graphics that fit your app's personality.",
+        "price": "$3,999",
+        "fullDescription": "App design is one my high end skill that i give to my customers.",
+        "features": [
+          "Web Application Design",
+          "Responsive Design",
+          "Animation Effects"
+        ],
+        "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop"
+      }
+    ]
+  },
+  "motivation": {
+    "title": "АУДИТ",
+    "content": {
+      "title_top": [
+        "Я не начинаю с рекламы.",
+        "Я начинаю с диагноза."
+      ],
+      "item_1_title": "Большинство фабрик приходят, когда:",
+      "item_1_content": [
+        "продажи не растут",
+        "рынок изменился",
+        "старые каналы не работают",
+        "маркетинг стал расходом, а не инструментом"
+      ],
+      "title_2": [
+        "В таких случаях «креатив» не лечит.",
+        "Нужен маркетинговый аудит."
+      ],
+      "item_2_title": "Я разбираю бизнес по системе:",
+      "item_2_content": [
+        "PESTLE — что происходит с рынком и страной",
+        "SWOT — реальные сильные и слабые стороны",
+        "STP — кому вы на самом деле продаёте",
+        "воронка продаж — где теряются деньги",
+        "каналы и конкуренты — почему выбирают не вас",
+        "маркетинг-микс (4P / 6P+F) — где сломана логика"
+      ],
+      "item_3_title": "После аудита:",
+      "item_3_content": [
+        "появляется чёткая картина",
+        "уходят лишние действия",
+        "маркетинг становится управляемым",
+        "решения опираются на цифры, а не на «ощущения»"
+      ],
+      "title_3": ["Я не продаю рекламу." , "Я ставлю диагноз и предлагаю лечение, которое даёт результат."]
+    }
+  },
+  "experience": {
+    "title": "Опыт",
+    "content": [
+      {
+        "period": "2019- по н.в.",
+        "company": "WORLD TEXTILE MARKETING AGENCY",
+        "position": "Учредитель, Директор",
+        "description": [""]
+      },
+      {
+        "period": "2019",
+        "company": "«TPMA» при Ассоциации «Узтекстильпром»",
+        "position": "Главный специалист отдела маркетинга",
+        "description": ["Анализ рынка, экспортных направлений и эффективности продвижения"]
+      },
+      {
+        "period": "2018-2019",
+        "company": "«Uztextile Export» при Ассоциации «Узтекстильпром»",
+        "position": "Ведущий специалист",
+        "description": ["Поиск и привлечение клиентов из стран ЕС","Ведение переговоров и сопровождение экспортных сделок"]
+      },
+      {
+        "period": "2017-2018",
+        "company": "«TPMA» при Ассоциации «Узтекстильпром»",
+        "position": "Главный специалист отдела маркетинга",
+        "description": ["Анализ рынка, экспортных направлений и эффективности продвижения"]
+      },
+      {
+        "period": "2016-2017",
+        "company": "Дизайн центр «Шарк Либослари» при Ассоциации «Узтекстильпром»",
+        "position": "Ведущий специалист отдела маркетинга.",
+        "description": ["Продвижение коллекций одежды и услуг центра"]
+      }
+    ]
+  },
+  "favoriteStack": {
+    "title": "FAVOURITE STACK"
+  },
+  "awards": {
+    "title": "Выставки",
+    "content": [
+      {
+        "period": "2025",
+        "company": "Heimtextil",
+        "position": "Узбекистан, Ташкент"
+
+      },
+      {
+        "period": "2025",
+        "company": "UzTextile Expo",
+        "position": "Узбекистан, Ташкент"
+      },
+      {
+        "period": "2024",
+        "company": "Heimtextil",
+        "position": "Узбекистан, Ташкент"
+      },
+      {
+        "period": "2024",
+        "company": "UzTextile Expo",
+        "position": "Узбекистан, Ташкент"
+      },
+      {
+        "period": "2023",
+        "company": "UzTextile Expo",
+        "position": "Узбекистан, Ташкент"
+      },
+      {
+        "period": "2022",
+        "company": "BEE TOGETHER",
+        "position": "Россия, Москва."
+      },
+      {
+        "period": "2019",
+        "company": "FAST TEXTILE",
+        "position": "Польша, Варшава."
+      },
+      {
+        "period": "2019",
+        "company": "CJF - Детская мода",
+        "position": "Россия, Москва."
+      },
+      {
+        "period": "2019",
+        "company": "Мир Детство и Детская мода",
+        "position": "Казахстан, Алматы."
+      },
+      {
+        "period": "2018",
+        "company": "Мир Детство и Детская мода",
+        "position": "Казахстан, Алматы."
+      },
+      {
+        "period": "2018",
+        "company": "International Istanbul Yarn Fair",
+        "position": "Турция, Стамбул."
+      },
+      {
+        "period": "2018",
+        "company": "Yarn and Fabrics Sourcing Fair",
+        "position": "Бангладеш, Дакка."
+      },
+      {
+        "period": "2017",
+        "company": "TEX WORLD USA",
+        "position": "США, Нью-Йорк."
+      }
+    ]
+  },
+  "trusted": {
+    "title": "TRUSTED BY INTERNATIONAL BRANDS"
+  },
+  "questions": {
+    "title": ["Часто" , "задаваемые вопросы"],
+    "footer_title": ["НУЖЕН АУДИТ" , "РЫНОК И КЛИЕНТЫ"],
+    "btn": "СВЯЗАТЬСЯ"
+  }
+}
