@@ -70,7 +70,7 @@ const VerticalScrollPage = () => {
     return (
         <div className="h-screen w-full overflow-hidden  relative">
             {/* Navbar */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center">
+            <nav className="fixed top-0 left-0 right-0 z-20 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b">
                 <div className="text-white text-2xl font-serif italic">
                     <span className="font-light">_</span>Roger
                 </div>
@@ -89,13 +89,23 @@ const VerticalScrollPage = () => {
             </nav>
 
             {/* Full Screen Menu */}
-            <div className={`fixed inset-0 z-40 pointer-events-none ${menuOpen ? '' : ''}`}>
+            <div className={`fixed inset-0 z-20 pointer-events-none ${menuOpen ? '' : ''}`}>
                 {/* Menu Panel - Desktop: 30% width from right, Mobile: 100% width */}
                 <div
                     className={`absolute top-0 right-0 bottom-0 w-full md:w-[30%] bg-slate-950 transition-transform duration-500 pointer-events-auto ${menuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                    <div className="overflow-y-auto h-full px-8 md:px-12 py-8">
+                    <div className="overflow-y-auto h-full px-8 md:px-12 pt-10">
                         <div className="relative w-full min-h-full">
-
+                            <button
+                                onClick={() => setMenuOpen(!menuOpen)}
+                                className="w-12 h-12 absolute top-0 right-0 flex flex-col justify-center items-center gap-1.5 group cursor-pointer"
+                            >
+                    <span
+                        className={`w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+                                <span
+                                    className={`w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+                                <span
+                                    className={`w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+                            </button>
                             <nav className="pl-1 pt-15 lg:pl-0 lg:pr-12 pb-8">
                                 {/* Language selector */}
                                 <div className="flex gap-6 mb-12 text-sm">
@@ -178,7 +188,7 @@ const VerticalScrollPage = () => {
                 {sections.map((section, index) => (
                     <SwiperSlide key={index}>
                         <div
-                            className={`w-full h-full  relative overflow-hidden object-cover`}
+                            className={`w-full h-full  relative overflow-hidden bg-cover`}
                             style={section.bg ? {backgroundImage: `url(${section.bg})`} : {background: "#0A0513"}}>
                             {section.content}
                         </div>
