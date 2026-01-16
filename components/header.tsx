@@ -35,35 +35,27 @@ const Header = () => {
 
             {/* Modal */}
             {open && (
-                <>
-                    <style jsx global>{`
-                        nav {
-                            opacity: 0 !important;
-                            pointer-events: none !important;
-                        }
-                    `}</style>
-                    <div className="fixed inset-0 z-[9999] h-screen bg-black/95 flex justify-center items-center">
-                        {/* Close button */}
-                        <button
-                            onClick={() => setOpen(false)}
-                            className="absolute top-6 right-6 text-white hover:text-[#D8FA08]"
-                        >
-                            <X size={35}/>
-                        </button>
+                <div className="fixed inset-0 z-[99999] h-screen bg-black/95 flex justify-center items-center">
+                    {/* Close button */}
+                    <button
+                        onClick={() => setOpen(false)}
+                        className="absolute top-6 right-6 text-white hover:text-[#D8FA08] z-[100000]"
+                    >
+                        <X size={35}/>
+                    </button>
 
-                        {/* Video */}
-                        <div className="w-[90%] md:w-[70%] lg:w-[60%] aspect-video">
-                            <iframe
-                                className="w-full h-full rounded-xl"
-                                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                title="YouTube video"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            ></iframe>
-                        </div>
+                    {/* Video */}
+                    <div className="w-[90%] md:w-[70%] lg:w-[60%] aspect-video">
+                        <iframe
+                            className="w-full h-full rounded-xl"
+                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                            title="YouTube video"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                        ></iframe>
                     </div>
-                </>
+                </div>
             )}
         </>
     );
