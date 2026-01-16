@@ -16,7 +16,9 @@ const VerticalScrollPage = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const swiperRef = useRef(null);
     const slideRefs = useRef([]);
-    const [canSwipe, setCanSwipe] = useState(true);
+    const scrollTimeoutRef = useRef(null);
+    const touchStartRef = useRef(null);
+    const touchEndRef = useRef(null);
 
     const menuItems = [
         {id: 0, label: 'Home'},
@@ -68,39 +70,68 @@ const VerticalScrollPage = () => {
     };
 
     useEffect(() => {
-        const checkScroll = () => {
-            const currentSlide = slideRefs.current[activeIndex];
-            if (!currentSlide) return;
+        let isScrolling = false;
 
-            const hasScroll = currentSlide.scrollHeight > currentSlide.clientHeight;
-
-            if (!hasScroll) {
-                setCanSwipe(true);
+        const handleWheel = (e) => {
+            if (isScrolling) {
+                e.preventDefault();
                 return;
             }
+
+            const currentSlide = slideRefs.current[activeIndex];
+            if (!currentSlide || !swiperRef.current?.swiper) return;
 
             const scrollTop = currentSlide.scrollTop;
             const scrollHeight = currentSlide.scrollHeight;
             const clientHeight = currentSlide.clientHeight;
-            const isAtTop = scrollTop === 0;
-            const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+            const hasScroll = scrollHeight > clientHeight + 5; // 5px tolerance
 
-            // Faqat tepada yoki pastda bo'lganda swipe qilish mumkin
-            setCanSwipe(isAtTop || isAtBottom);
+            // Agar scroll yo'q bo'lsa, darhol slide o'zgartirish
+            if (!hasScroll) {
+                if (e.deltaY > 0 && activeIndex < sections.length - 1) {
+                    e.preventDefault();
+                    isScrolling = true;
+                    swiperRef.current.swiper.slideNext();
+                    setTimeout(() => { isScrolling = false; }, 700);
+                } else if (e.deltaY < 0 && activeIndex > 0) {
+                    e.preventDefault();
+                    isScrolling = true;
+                    swiperRef.current.swiper.slidePrev();
+                    setTimeout(() => { isScrolling = false; }, 700);
+                }
+                return;
+            }
+
+            const isAtTop = scrollTop <= 1;
+            const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
+
+            // Yuqoriga scroll
+            if (e.deltaY < 0 && isAtTop && activeIndex > 0) {
+                e.preventDefault();
+                isScrolling = true;
+                swiperRef.current.swiper.slidePrev();
+                setTimeout(() => { isScrolling = false; }, 700);
+            }
+            // Pastga scroll
+            else if (e.deltaY > 0 && isAtBottom && activeIndex < sections.length - 1) {
+                e.preventDefault();
+                isScrolling = true;
+                swiperRef.current.swiper.slideNext();
+                setTimeout(() => { isScrolling = false; }, 700);
+            }
         };
 
         const currentSlide = slideRefs.current[activeIndex];
         if (currentSlide) {
-            currentSlide.addEventListener('scroll', checkScroll);
-            checkScroll();
+            currentSlide.addEventListener('wheel', handleWheel, {passive: false});
         }
 
         return () => {
             if (currentSlide) {
-                currentSlide.removeEventListener('scroll', checkScroll);
+                currentSlide.removeEventListener('wheel', handleWheel);
             }
         };
-    }, [activeIndex]);
+    }, [activeIndex, sections.length]);
 
     return (
         <div className="h-screen w-full overflow-hidden relative">
@@ -192,18 +223,11 @@ const VerticalScrollPage = () => {
                 direction="vertical"
                 slidesPerView={1}
                 speed={600}
-                mousewheel={{
-                    forceToAxis: true,
-                    sensitivity: 1,
-                    releaseOnEdges: true,
-                }}
-                allowTouchMove={canSwipe}
-                touchRatio={1.5}
-                threshold={5}
+                mousewheel={false}
+                allowTouchMove={false}
                 modules={[Mousewheel]}
                 onSlideChange={(swiper) => {
                     setActiveIndex(swiper.activeIndex);
-                    // Yangi slide ga o'tganda scroll ni tepaga qaytarish
                     const newSlide = slideRefs.current[swiper.activeIndex];
                     if (newSlide) {
                         newSlide.scrollTop = 0;
@@ -218,7 +242,7 @@ const VerticalScrollPage = () => {
                             className="w-full h-full relative bg-cover overflow-y-auto"
                             style={section.bg ? {backgroundImage: `url(${section.bg})`} : {background: "#0A0513"}}
                         >
-                            <div className="min-h-full flex items-center justify-center py-24 px-4">
+                            <div className="w-full h-full">
                                 {section.content}
                             </div>
                         </div>
