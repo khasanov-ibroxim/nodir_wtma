@@ -1,7 +1,7 @@
 "use client"
 import React, {useRef, useState} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import {Mousewheel, Pagination} from 'swiper/modules';
+import {Mousewheel, Pagination, FreeMode} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import Header from "@/components/header";
@@ -70,7 +70,7 @@ const VerticalScrollPage = () => {
     return (
         <div className="h-screen w-full overflow-hidden  relative">
             {/* Navbar */}
-            <nav className="fixed top-0 left-0 right-0 z-20 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b">
+            <nav className={`fixed top-0 left-0 right-0 z-10 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b transition-opacity duration-300`}>
                 <div className="text-white text-2xl font-serif italic">
                     <span className="font-light">_</span>Roger
                 </div>
@@ -180,15 +180,16 @@ const VerticalScrollPage = () => {
                     sensitivity: 1,
                     releaseOnEdges: true,
                 }}
-
-                modules={[Mousewheel, Pagination]}
+                allowTouchMove={false}
+                nested={true}
+                modules={[Mousewheel, Pagination, FreeMode]}
                 onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
                 className="w-full h-full"
             >
                 {sections.map((section, index) => (
                     <SwiperSlide key={index}>
                         <div
-                            className={`w-full h-full  relative overflow-hidden bg-cover`}
+                            className={`w-full h-full relative bg-cover overflow-y-auto`}
                             style={section.bg ? {backgroundImage: `url(${section.bg})`} : {background: "#0A0513"}}>
                             {section.content}
                         </div>

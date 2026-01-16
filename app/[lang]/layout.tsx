@@ -1,10 +1,11 @@
 // app/[lang]/layoutHome.jsx
-import { i18n, Locale } from "@/i18n-config";
-import { getCommonDictionary } from "@/lib/dictionary";
-import { notFound } from "next/navigation";
+import {i18n, Locale} from "@/i18n-config";
+import {getCommonDictionary} from "@/lib/dictionary";
+import {notFound} from "next/navigation";
+import FooterComponent from "@/components/layout/footer_component";
 
 export async function generateStaticParams() {
-    return i18n.locales.map((locale) => ({ lang: locale }));
+    return i18n.locales.map((locale) => ({lang: locale}));
 }
 
 export default async function LangLayout({
@@ -14,7 +15,7 @@ export default async function LangLayout({
     children: React.ReactNode,
     params: Promise<{ lang: Locale }>
 }) {
-    const { lang } = await params;
+    const {lang} = await params;
 
     if (!i18n.locales.includes(lang)) {
         notFound();
@@ -26,7 +27,7 @@ export default async function LangLayout({
         <>
 
             {children}
-
+            <FooterComponent/>
         </>
     );
 }

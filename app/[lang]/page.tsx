@@ -15,6 +15,7 @@ export default async function Home({ params }: HomeProps) {
     return (
         <div className="">
            <VerticalScrollPage/>
+
         </div>
     );
 }
