@@ -35,11 +35,11 @@ const Header = () => {
 
             {/* Modal */}
             {open && (
-                <div className="fixed inset-0 z-[99999] h-screen bg-black/95 flex justify-center items-center">
+                <div className="fixed inset-0 z-[99] h-screen bg-black/95 flex justify-center items-center">
                     {/* Close button */}
                     <button
                         onClick={() => setOpen(false)}
-                        className="absolute top-6 right-6 text-white hover:text-[#D8FA08] z-[100000]"
+                        className="absolute top-6 right-6 text-white hover:text-[#D8FA08] z-[999]"
                     >
                         <X size={35}/>
                     </button>

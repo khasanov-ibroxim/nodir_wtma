@@ -16,9 +16,8 @@ const VerticalScrollPage = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const swiperRef = useRef(null);
     const slideRefs = useRef([]);
-    const scrollTimeoutRef = useRef(null);
-    const touchStartRef = useRef(null);
-    const touchEndRef = useRef(null);
+    const touchStartYRef = useRef(null);
+    const scrollStartRef = useRef(null);
 
     const menuItems = [
         {id: 0, label: 'Home'},
@@ -69,6 +68,7 @@ const VerticalScrollPage = () => {
         }
     };
 
+    // Desktop wheel scroll
     useEffect(() => {
         let isScrolling = false;
 
@@ -84,9 +84,8 @@ const VerticalScrollPage = () => {
             const scrollTop = currentSlide.scrollTop;
             const scrollHeight = currentSlide.scrollHeight;
             const clientHeight = currentSlide.clientHeight;
-            const hasScroll = scrollHeight > clientHeight + 5; // 5px tolerance
+            const hasScroll = scrollHeight > clientHeight + 5;
 
-            // Agar scroll yo'q bo'lsa, darhol slide o'zgartirish
             if (!hasScroll) {
                 if (e.deltaY > 0 && activeIndex < sections.length - 1) {
                     e.preventDefault();
@@ -105,15 +104,12 @@ const VerticalScrollPage = () => {
             const isAtTop = scrollTop <= 1;
             const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
 
-            // Yuqoriga scroll
             if (e.deltaY < 0 && isAtTop && activeIndex > 0) {
                 e.preventDefault();
                 isScrolling = true;
                 swiperRef.current.swiper.slidePrev();
                 setTimeout(() => { isScrolling = false; }, 700);
-            }
-            // Pastga scroll
-            else if (e.deltaY > 0 && isAtBottom && activeIndex < sections.length - 1) {
+            } else if (e.deltaY > 0 && isAtBottom && activeIndex < sections.length - 1) {
                 e.preventDefault();
                 isScrolling = true;
                 swiperRef.current.swiper.slideNext();
@@ -133,10 +129,100 @@ const VerticalScrollPage = () => {
         };
     }, [activeIndex, sections.length]);
 
+    // Mobile touch scroll
+    useEffect(() => {
+        const currentSlide = slideRefs.current[activeIndex];
+        if (!currentSlide) return;
+
+        let isTransitioning = false;
+
+        const handleTouchStart = (e) => {
+            if (isTransitioning) return;
+            touchStartYRef.current = e.touches[0].clientY;
+            scrollStartRef.current = currentSlide.scrollTop;
+        };
+
+        const handleTouchMove = (e) => {
+            if (isTransitioning || touchStartYRef.current === null) return;
+
+            const currentY = e.touches[0].clientY;
+            const deltaY = touchStartYRef.current - currentY;
+
+            const scrollTop = currentSlide.scrollTop;
+            const scrollHeight = currentSlide.scrollHeight;
+            const clientHeight = currentSlide.clientHeight;
+            const hasScroll = scrollHeight > clientHeight + 5;
+
+            // Agar scroll yo'q bo'lsa
+            if (!hasScroll) {
+                // Pastga swipe (deltaY > 0)
+                if (deltaY > 50 && activeIndex < sections.length - 1) {
+                    e.preventDefault();
+                    isTransitioning = true;
+                    swiperRef.current?.swiper.slideNext();
+                    touchStartYRef.current = null;
+                    setTimeout(() => { isTransitioning = false; }, 700);
+                }
+                // Yuqoriga swipe (deltaY < 0)
+                else if (deltaY < -50 && activeIndex > 0) {
+                    e.preventDefault();
+                    isTransitioning = true;
+                    swiperRef.current?.swiper.slidePrev();
+                    touchStartYRef.current = null;
+                    setTimeout(() => { isTransitioning = false; }, 700);
+                }
+                // Pull-to-refresh oldini olish
+                else if (deltaY < 0 && activeIndex === 0) {
+                    e.preventDefault();
+                }
+                return;
+            }
+
+            const isAtTop = scrollTop <= 1;
+            const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
+
+            // Yuqorida va yuqoriga swipe
+            if (deltaY < -50 && isAtTop && activeIndex > 0) {
+                e.preventDefault();
+                isTransitioning = true;
+                swiperRef.current?.swiper.slidePrev();
+                touchStartYRef.current = null;
+                setTimeout(() => { isTransitioning = false; }, 700);
+            }
+            // Birinchi slide'da yuqoriga swipe - pull-to-refresh ni bloklash
+            else if (deltaY < 0 && isAtTop && activeIndex === 0) {
+                e.preventDefault();
+            }
+            // Pastda va pastga swipe
+            else if (deltaY > 50 && isAtBottom && activeIndex < sections.length - 1) {
+                e.preventDefault();
+                isTransitioning = true;
+                swiperRef.current?.swiper.slideNext();
+                touchStartYRef.current = null;
+                setTimeout(() => { isTransitioning = false; }, 700);
+            }
+        };
+
+        const handleTouchEnd = () => {
+            touchStartYRef.current = null;
+            scrollStartRef.current = null;
+        };
+
+        currentSlide.addEventListener('touchstart', handleTouchStart, {passive: true});
+        currentSlide.addEventListener('touchmove', handleTouchMove, {passive: false});
+        currentSlide.addEventListener('touchend', handleTouchEnd, {passive: true});
+
+        return () => {
+            currentSlide.removeEventListener('touchstart', handleTouchStart);
+            currentSlide.removeEventListener('touchmove', handleTouchMove);
+            currentSlide.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, [activeIndex, sections.length]);
+
     return (
         <div className="h-screen w-full overflow-hidden relative">
             {/* Navbar */}
-            <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b bg-black/20 backdrop-blur-sm">
+            <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b ">
                 <div className="text-white text-2xl font-serif italic">
                     <span className="font-light">_</span>Roger
                 </div>

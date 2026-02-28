@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
     return (
-        <div className="w-full h-auto flex items-center justify-center px-8 md:px-20 py-20 md:py-32">
+        <div className="w-full h-auto flex items-center justify-center px-8 md:px-20 py-24 md:py-32">
             <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 relative pb-32">
                 {/* Left Section */}
                 <div className="flex flex-col justify-center">
