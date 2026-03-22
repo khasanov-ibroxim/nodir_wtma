@@ -1,9 +1,15 @@
 "use client"
 import React, {useState, useEffect} from 'react';
+import {createPortal} from 'react-dom';
 import {Play, X} from 'lucide-react';
 
 const Header = () => {
     const [open, setOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if (open) {
@@ -11,7 +17,34 @@ const Header = () => {
         } else {
             document.body.style.overflow = 'unset';
         }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
     }, [open]);
+
+    const modal = (
+        <div className="fixed inset-0 z-[9999] bg-black/95 flex justify-center items-center">
+            {/* Close button */}
+            <button
+                onClick={() => setOpen(false)}
+                className="absolute top-6 right-6 text-white hover:text-[#D8FA08] z-[10000] cursor-pointer"
+            >
+                <X size={35}/>
+            </button>
+
+            {/* Video */}
+            <div className="w-[90%] md:w-[70%] lg:w-[60%] aspect-video">
+                <iframe
+                    className="w-full h-full rounded-xl"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+                    title="YouTube video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                ></iframe>
+            </div>
+        </div>
+    );
 
     return (
         <>
@@ -33,30 +66,8 @@ const Header = () => {
                 </div>
             </div>
 
-            {/* Modal */}
-            {open && (
-                <div className="fixed inset-0 z-[99] h-screen bg-black/95 flex justify-center items-center">
-                    {/* Close button */}
-                    <button
-                        onClick={() => setOpen(false)}
-                        className="absolute top-6 right-6 text-white hover:text-[#D8FA08] z-[999]"
-                    >
-                        <X size={35}/>
-                    </button>
-
-                    {/* Video */}
-                    <div className="w-[90%] md:w-[70%] lg:w-[60%] aspect-video">
-                        <iframe
-                            className="w-full h-full rounded-xl"
-                            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                            title="YouTube video"
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                        ></iframe>
-                    </div>
-                </div>
-            )}
+            {/* Modal — document.body ga portal orqali render qilinadi */}
+            {open && mounted && createPortal(modal, document.body)}
         </>
     );
 };
