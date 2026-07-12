@@ -18,11 +18,11 @@ interface PortfolioItem {
 }
 
 const portfolioItems: PortfolioItem[] = [
-    { id: 1, category: "Inspiration", title: "Playstation 5 Dualshock", image: i1 },
-    { id: 2, category: "Photography", title: "Good Vibes Only", image: i2 },
-    { id: 3, category: "Design", title: "Creative Artwork", image: i3 },
-    { id: 4, category: "Design", title: "Minimal Concept", image: i4 },
-    { id: 5, category: "Design", title: "Minimal Concept", image: i5 },
+    { id: 1, category: "Textile", title: "CHUST TEXTILE", image: i1 },
+    { id: 2, category: "Textile", title: "OSBORN TEXTILE", image: i2 },
+    { id: 3, category: "Textile", title: "ZELAL TEKSTIL", image: i3 },
+    { id: 4, category: "Textile", title: "KHIVACODE", image: i4 },
+    { id: 5, category: "Textile", title: "BAKAN TEX", image: i5 },
 ];
 
 // Duplicate for seamless loop

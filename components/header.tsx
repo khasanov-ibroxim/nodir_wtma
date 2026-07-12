@@ -52,8 +52,8 @@ const Header = () => {
                 <div className="md:h-full flex md:items-start md:justify-center flex-col">
                     <p className="text-base text-white mb-5">UX Design Studio</p>
                     <h1 className="text-6xl md:text-5xl lg:text-8xl text-white font-bold">
-                        <span className="text-[#D8FA08]">Howdey,</span>
-                        <br/> I'm Roger.
+                        <span className="text-[#D8FA08]">Нодирхон </span>
+                        <br/> Мубаров
                     </h1>
                     <div className="bg-[#D8FA08] w-[30%] md:w-[50%] h-1.5 mt-10 md:mt-20"></div>
                 </div>
