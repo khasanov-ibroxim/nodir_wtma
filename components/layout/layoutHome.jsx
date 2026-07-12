@@ -1,7 +1,6 @@
 "use client"
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useCallback} from 'react';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import {Mousewheel} from 'swiper/modules';
 import 'swiper/css';
 import Header from "@/components/header";
 import Portfolio from "@/components/portfolio";
@@ -11,13 +10,34 @@ import Testimonials from "@/components/testimonials";
 import Blog from "@/components/blog";
 import Contact from "@/components/contact";
 
+// Swiper transition tezligi bilan bir xil bo'lishi kerak — shu son orqali
+// "qulflash" (lock) muddati hisoblanadi, aks holda bir gesture ichida
+// bir nechta section sakrab ketishi mumkin.
+const TRANSITION_SPEED = 700;
+// Trackpad shovqinini (juda kichik deltaY qiymatlarini) e'tiborsiz qoldirish uchun.
+const WHEEL_THRESHOLD = 5;
+// Mobil touch uchun minimal swipe masofasi (px).
+const TOUCH_THRESHOLD = 60;
+
 const VerticalScrollPage = () => {
     const [activeIndex, setActiveIndex] = useState(0);
     const [menuOpen, setMenuOpen] = useState(false);
+
     const swiperRef = useRef(null);
     const slideRefs = useRef([]);
+    const containerRef = useRef(null);
+
+    // Muhim: bu qiymatlar useRef orqali saqlanadi, chunki wheel/touch
+    // handlerlar faqat BIR MARTA (mount paytida) o'rnatiladi va state
+    // o'zgarganda qayta ulanmaydi. Shu sabab handler ichida har doim
+    // eng so'nggi qiymatni o'qish uchun ref kerak (stale closure bo'lmasligi uchun).
+    const activeIndexRef = useRef(0);
+    const menuOpenRef = useRef(false);
+    const isLockedRef = useRef(false);
     const touchStartYRef = useRef(null);
-    const scrollStartRef = useRef(null);
+
+    useEffect(() => { activeIndexRef.current = activeIndex; }, [activeIndex]);
+    useEffect(() => { menuOpenRef.current = menuOpen; }, [menuOpen]);
 
     const menuItems = [
         {id: 0, label: 'Home'},
@@ -30,197 +50,166 @@ const VerticalScrollPage = () => {
     ];
 
     const sections = [
-        {
-            id: 0,
-            content: <Header/>,
-            bg: "/images/header/header.jpg"
-        },
-        {
-            id: 1,
-            content: <About/>
-        },
-        {
-            id: 2,
-            content: <Portfolio/>
-        },
-        {
-            id: 3,
-            content: <Experience/>
-        },
-        {
-            id: 4,
-            content: <Testimonials/>
-        },
-        {
-            id: 5,
-            content: <Blog/>
-        },
-        {
-            id: 6,
-            content: <Contact/>
-        },
+        {id: 0, content: <Header/>, bg: "/images/header/header.jpg"},
+        {id: 1, content: <About/>},
+        {id: 2, content: <Portfolio/>},
+        {id: 3, content: <Experience/>},
+        {id: 4, content: <Testimonials/>},
+        {id: 5, content: <Blog/>},
+        {id: 6, content: <Contact/>},
     ];
 
-    const navigateToSlide = (index) => {
-        if (swiperRef.current && swiperRef.current.swiper) {
-            swiperRef.current.swiper.slideTo(index);
-            setMenuOpen(false);
-        }
-    };
+    // Bitta joyga jamlangan navigatsiya funksiyasi: lock qo'yadi,
+    // Swiper'ni harakatlantiradi, TRANSITION_SPEED tugaganda lockni ochadi.
+    const goTo = useCallback((index) => {
+        if (index < 0 || index > sections.length - 1) return;
+        if (!swiperRef.current?.swiper) return;
+        if (isLockedRef.current) return;
 
-    // Desktop wheel scroll
+        isLockedRef.current = true;
+        swiperRef.current.swiper.slideTo(index);
+        setMenuOpen(false);
+
+        setTimeout(() => {
+            isLockedRef.current = false;
+        }, TRANSITION_SPEED);
+    }, [sections.length]);
+
+    const navigateToSlide = (index) => goTo(index);
+
+    // Desktop: mouse/trackpad wheel — konteynerga BIR MARTA o'rnatiladi
     useEffect(() => {
-        let isScrolling = false;
+        const container = containerRef.current;
+        if (!container) return;
 
         const handleWheel = (e) => {
-            if (isScrolling) {
-                e.preventDefault();
-                return;
-            }
+            if (menuOpenRef.current) return;
+            if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
 
-            const currentSlide = slideRefs.current[activeIndex];
-            if (!currentSlide || !swiperRef.current?.swiper) return;
+            const idx = activeIndexRef.current;
+            const currentSlide = slideRefs.current[idx];
+            if (!currentSlide) return;
 
-            const scrollTop = currentSlide.scrollTop;
-            const scrollHeight = currentSlide.scrollHeight;
-            const clientHeight = currentSlide.clientHeight;
+            const {scrollTop, scrollHeight, clientHeight} = currentSlide;
             const hasScroll = scrollHeight > clientHeight + 5;
+            const isAtTop = scrollTop <= 1;
+            const isAtBottom = scrollHeight - clientHeight - scrollTop <= 1;
 
-            if (!hasScroll) {
-                if (e.deltaY > 0 && activeIndex < sections.length - 1) {
-                    e.preventDefault();
-                    isScrolling = true;
-                    swiperRef.current.swiper.slideNext();
-                    setTimeout(() => { isScrolling = false; }, 700);
-                } else if (e.deltaY < 0 && activeIndex > 0) {
-                    e.preventDefault();
-                    isScrolling = true;
-                    swiperRef.current.swiper.slidePrev();
-                    setTimeout(() => { isScrolling = false; }, 700);
-                }
+            const goingDown = e.deltaY > 0;
+            const goingUp = e.deltaY < 0;
+
+            // Ichki content hali scroll qilinmagan bo'lsa — avval uni scroll qildiramiz,
+            // section faqat chekkaga (top/bottom) yetganda almashadi.
+            const canLeaveSection = !hasScroll || (goingDown && isAtBottom) || (goingUp && isAtTop);
+            if (!canLeaveSection) return;
+
+            if (isLockedRef.current) {
+                e.preventDefault();
                 return;
             }
 
-            const isAtTop = scrollTop <= 1;
-            const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
-
-            if (e.deltaY < 0 && isAtTop && activeIndex > 0) {
+            if (goingDown && idx < sections.length - 1) {
                 e.preventDefault();
-                isScrolling = true;
-                swiperRef.current.swiper.slidePrev();
-                setTimeout(() => { isScrolling = false; }, 700);
-            } else if (e.deltaY > 0 && isAtBottom && activeIndex < sections.length - 1) {
+                goTo(idx + 1);
+            } else if (goingUp && idx > 0) {
                 e.preventDefault();
-                isScrolling = true;
-                swiperRef.current.swiper.slideNext();
-                setTimeout(() => { isScrolling = false; }, 700);
+                goTo(idx - 1);
             }
         };
 
-        const currentSlide = slideRefs.current[activeIndex];
-        if (currentSlide) {
-            currentSlide.addEventListener('wheel', handleWheel, {passive: false});
-        }
+        container.addEventListener('wheel', handleWheel, {passive: false});
+        return () => container.removeEventListener('wheel', handleWheel);
+    }, [goTo, sections.length]);
 
-        return () => {
-            if (currentSlide) {
-                currentSlide.removeEventListener('wheel', handleWheel);
-            }
-        };
-    }, [activeIndex, sections.length]);
-
-    // Mobile touch scroll
+    // Mobil: touch swipe — konteynerga BIR MARTA o'rnatiladi
     useEffect(() => {
-        const currentSlide = slideRefs.current[activeIndex];
-        if (!currentSlide) return;
-
-        let isTransitioning = false;
+        const container = containerRef.current;
+        if (!container) return;
 
         const handleTouchStart = (e) => {
-            if (isTransitioning) return;
+            if (menuOpenRef.current) return;
             touchStartYRef.current = e.touches[0].clientY;
-            scrollStartRef.current = currentSlide.scrollTop;
         };
 
         const handleTouchMove = (e) => {
-            if (isTransitioning || touchStartYRef.current === null) return;
+            if (menuOpenRef.current || touchStartYRef.current === null) return;
+
+            const idx = activeIndexRef.current;
+            const currentSlide = slideRefs.current[idx];
+            if (!currentSlide) return;
 
             const currentY = e.touches[0].clientY;
-            const deltaY = touchStartYRef.current - currentY;
+            const deltaY = touchStartYRef.current - currentY; // > 0 = tepaga surish (pastga o'tish)
 
-            const scrollTop = currentSlide.scrollTop;
-            const scrollHeight = currentSlide.scrollHeight;
-            const clientHeight = currentSlide.clientHeight;
+            const {scrollTop, scrollHeight, clientHeight} = currentSlide;
             const hasScroll = scrollHeight > clientHeight + 5;
+            const isAtTop = scrollTop <= 1;
+            const isAtBottom = scrollHeight - clientHeight - scrollTop <= 1;
 
-            // Agar scroll yo'q bo'lsa
-            if (!hasScroll) {
-                // Pastga swipe (deltaY > 0)
-                if (deltaY > 50 && activeIndex < sections.length - 1) {
-                    e.preventDefault();
-                    isTransitioning = true;
-                    swiperRef.current?.swiper.slideNext();
-                    touchStartYRef.current = null;
-                    setTimeout(() => { isTransitioning = false; }, 700);
-                }
-                // Yuqoriga swipe (deltaY < 0)
-                else if (deltaY < -50 && activeIndex > 0) {
-                    e.preventDefault();
-                    isTransitioning = true;
-                    swiperRef.current?.swiper.slidePrev();
-                    touchStartYRef.current = null;
-                    setTimeout(() => { isTransitioning = false; }, 700);
-                }
-                // Pull-to-refresh oldini olish
-                else if (deltaY < 0 && activeIndex === 0) {
-                    e.preventDefault();
-                }
+            const goingDown = deltaY > 0;
+            const goingUp = deltaY < 0;
+            const canLeaveSection = !hasScroll || (goingDown && isAtBottom) || (goingUp && isAtTop);
+
+            // Birinchi section'da pull-to-refresh effektini bloklaymiz
+            if (idx === 0 && goingUp && isAtTop) e.preventDefault();
+
+            if (!canLeaveSection) return;
+            if (Math.abs(deltaY) < TOUCH_THRESHOLD) {
+                e.preventDefault();
+                return;
+            }
+            if (isLockedRef.current) {
+                e.preventDefault();
                 return;
             }
 
-            const isAtTop = scrollTop <= 1;
-            const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) <= 1;
-
-            // Yuqorida va yuqoriga swipe
-            if (deltaY < -50 && isAtTop && activeIndex > 0) {
+            if (goingDown && idx < sections.length - 1) {
                 e.preventDefault();
-                isTransitioning = true;
-                swiperRef.current?.swiper.slidePrev();
                 touchStartYRef.current = null;
-                setTimeout(() => { isTransitioning = false; }, 700);
-            }
-            // Birinchi slide'da yuqoriga swipe - pull-to-refresh ni bloklash
-            else if (deltaY < 0 && isAtTop && activeIndex === 0) {
+                goTo(idx + 1);
+            } else if (goingUp && idx > 0) {
                 e.preventDefault();
-            }
-            // Pastda va pastga swipe
-            else if (deltaY > 50 && isAtBottom && activeIndex < sections.length - 1) {
-                e.preventDefault();
-                isTransitioning = true;
-                swiperRef.current?.swiper.slideNext();
                 touchStartYRef.current = null;
-                setTimeout(() => { isTransitioning = false; }, 700);
+                goTo(idx - 1);
             }
         };
 
         const handleTouchEnd = () => {
             touchStartYRef.current = null;
-            scrollStartRef.current = null;
         };
 
-        currentSlide.addEventListener('touchstart', handleTouchStart, {passive: true});
-        currentSlide.addEventListener('touchmove', handleTouchMove, {passive: false});
-        currentSlide.addEventListener('touchend', handleTouchEnd, {passive: true});
+        container.addEventListener('touchstart', handleTouchStart, {passive: true});
+        container.addEventListener('touchmove', handleTouchMove, {passive: false});
+        container.addEventListener('touchend', handleTouchEnd, {passive: true});
 
         return () => {
-            currentSlide.removeEventListener('touchstart', handleTouchStart);
-            currentSlide.removeEventListener('touchmove', handleTouchMove);
-            currentSlide.removeEventListener('touchend', handleTouchEnd);
+            container.removeEventListener('touchstart', handleTouchStart);
+            container.removeEventListener('touchmove', handleTouchMove);
+            container.removeEventListener('touchend', handleTouchEnd);
         };
-    }, [activeIndex, sections.length]);
+    }, [goTo, sections.length]);
+
+    // Klaviatura bilan navigatsiya — qulaylik uchun qo'shimcha (desktop UX)
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (menuOpenRef.current) return;
+            const idx = activeIndexRef.current;
+
+            if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                e.preventDefault();
+                goTo(idx + 1);
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                goTo(idx - 1);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [goTo]);
 
     return (
-        <div className="h-screen w-full overflow-hidden relative">
+        <div ref={containerRef} className="h-screen w-full overflow-hidden relative">
             {/* Navbar */}
             <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b ">
                 <div className="text-white text-2xl font-serif italic">
@@ -258,7 +247,7 @@ const VerticalScrollPage = () => {
                                 </div>
 
                                 <ul className="space-y-4 lg:space-y-6">
-                                    {menuItems.map((item, index) => (
+                                    {menuItems.map((item) => (
                                         <li key={item.id}>
                                             <button
                                                 onClick={() => navigateToSlide(item.id)}
@@ -303,15 +292,40 @@ const VerticalScrollPage = () => {
                 </div>
             </div>
 
+            {/* O'ng tomondagi dot-navigatsiya (faqat desktop) */}
+            <div className="hidden md:flex flex-col gap-4 fixed right-6 top-1/2 -translate-y-1/2 z-40">
+                {sections.map((_, i) => (
+                    <button
+                        key={i}
+                        onClick={() => goTo(i)}
+                        aria-label={menuItems[i]?.label}
+                        className="group relative flex items-center justify-end w-6 h-6"
+                    >
+                        <span
+                            className={`pointer-events-none absolute right-full mr-3 whitespace-nowrap text-xs font-medium text-white opacity-0 translate-x-1 group-hover:opacity-80 group-hover:translate-x-0 transition-all duration-200`}
+                        >
+                            {menuItems[i]?.label}
+                        </span>
+                        <span
+                            className={`block rounded-full border border-white/50 transition-all duration-300 ${
+                                activeIndex === i
+                                    ? 'w-3 h-3 bg-lime-400 border-lime-400 scale-110'
+                                    : 'w-2 h-2 bg-transparent group-hover:bg-white/60'
+                            }`}
+                        />
+                    </button>
+                ))}
+            </div>
+
             {/* Swiper */}
             <Swiper
                 ref={swiperRef}
                 direction="vertical"
                 slidesPerView={1}
-                speed={600}
+                speed={TRANSITION_SPEED}
                 mousewheel={false}
                 allowTouchMove={false}
-                modules={[Mousewheel]}
+                simulateTouch={false}
                 onSlideChange={(swiper) => {
                     setActiveIndex(swiper.activeIndex);
                     const newSlide = slideRefs.current[swiper.activeIndex];

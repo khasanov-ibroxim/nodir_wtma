@@ -1,40 +1,25 @@
 "use client"
 import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import testimonial_bg from "@/assets/testimonial/testimonial_bg.jpg"
+import p1 from "@/assets/testimonial/p1.png"
+import p2 from "@/assets/testimonial/p2.png"
+import p3 from "@/assets/testimonial/p3.png"
 
 const testimonials = [
     {
         id: 1,
-        name: "Sarah Johnson",
-        position: "CEO at TechCorp",
-        image: "https://i.pravatar.cc/150?img=1",
-        text: "Working with Roger was an absolute pleasure. His attention to detail and creative vision transformed our brand identity completely. The results exceeded our expectations.",
-        rating: 5
-    },
-    {
-        id: 2,
-        name: "Michael Chen",
-        position: "Product Manager at StartupXYZ",
-        image: "https://i.pravatar.cc/150?img=33",
-        text: "Roger's UX expertise helped us increase user engagement by 150%. He has a unique ability to understand user needs and translate them into beautiful, functional designs.",
-        rating: 5
-    },
-    {
-        id: 3,
-        name: "Emily Rodriguez",
-        position: "Marketing Director at CreativeHub",
-        image: "https://i.pravatar.cc/150?img=5",
-        text: "Exceptional designer with great communication skills. Roger delivered our project on time and the quality was outstanding. Highly recommend!",
-        rating: 5
-    },
-    {
-        id: 4,
-        name: "David Park",
-        position: "Founder at DesignStudio",
-        image: "https://i.pravatar.cc/150?img=12",
-        text: "Roger's creative approach and technical skills are top-notch. He brought fresh ideas to our project and executed them flawlessly.",
-        rating: 5
+        name: "Сертифицированный специалист",
+        position: " Продажи • Таргетированная реклама • Контент",
+        text: "Формирование системного подхода к продажам, digital-продвижению и созданию визуального контента через профессиональное обучение и практику.",
     }
+];
+
+const partners = [
+    { name: "Artchive", src: p1.src },
+    { name: "Neuton", src: p2.src },
+    { name: "Christopher Willis", src: p3.src },
+    { name: "Creative Space", src: p1.src  },
 ];
 
 const Testimonials = () => {
@@ -48,86 +33,84 @@ const Testimonials = () => {
         setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
     };
 
-    const currentTestimonial = testimonials[currentIndex];
+    const current = testimonials[currentIndex];
 
     return (
-        <div className="w-full h-full flex items-center justify-center px-8 md:px-20 py-24 relative overflow-hidden">
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0A0513] via-[#1a0a2e] to-[#0A0513]"></div>
+        <div className="relative w-full h-full overflow-hidden bg-[#0A0513]">
+            {/* Background image */}
+            <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{ backgroundImage: `url('${testimonial_bg.src}')` }}
+            />
+            {/* Left-to-right fade so text on the right stays readable, dark base on the left */}
+            <div className="absolute inset-0 bg-gradient-to-r from-[#0A0513]/10 via-[#0A0513]/40 to-[#0A0513]/90" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0A0513] via-transparent to-transparent" />
 
-            <div className="w-full max-w-5xl relative z-10">
-                {/* Header */}
-                <div className="text-center mb-16">
-                    <p className="text-white/60 text-sm mb-4 tracking-wider uppercase">Testimonials</p>
-                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                        What <span className="text-[#D8FA08]">Clients Say</span>
-                    </h2>
+            {/* Content */}
+            <div className="relative z-10 h-full w-full flex flex-col justify-between px-6 sm:px-10 md:px-16 lg:px-24 pt-24 pb-8">
+
+                {/* Quote mark */}
+                <div className="text-[#D8FA08] text-6xl sm:text-7xl md:text-8xl leading-none font-serif select-none">
+                    &#8220;
                 </div>
 
-                {/* Testimonial Card */}
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/10">
-                    <Quote className="text-[#D8FA08] mb-6" size={48} strokeWidth={1.5} />
+                {/* Middle: heading (left) + testimonial card (right) */}
+                <div className="flex-1 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-10 lg:gap-6 -mt-8">
 
-                    <p className="text-white text-lg md:text-xl leading-relaxed mb-8">
-                        "{currentTestimonial.text}"
-                    </p>
+                    {/* Heading */}
+                    <h2 className="max-w-xl text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] font-extrabold text-white leading-[1.15]">
+                        Практический опыт, подкреплённый профессиональным обучением и международным подходом к развитию бизнеса.
+                    </h2>
 
-                    {/* Author */}
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-[#D8FA08]">
-                            <img
-                                src={currentTestimonial.image}
-                                alt={currentTestimonial.name}
-                                className="w-full h-full object-cover"
-                            />
-                        </div>
-                        <div>
-                            <h4 className="text-white font-bold text-lg">{currentTestimonial.name}</h4>
-                            <p className="text-white/60 text-sm">{currentTestimonial.position}</p>
-                        </div>
-                    </div>
+                    {/* Testimonial block */}
+                    <div className="w-full lg:max-w-md xl:max-w-lg">
+                        <p className="text-white text-sm sm:text-base md:text-lg leading-relaxed mb-8 sm:mb-10">
+                            "{current.text}"
+                        </p>
 
-                    {/* Rating */}
-                    <div className="flex gap-1 mb-8">
-                        {[...Array(currentTestimonial.rating)].map((_, i) => (
-                            <svg key={i} className="w-5 h-5 text-[#D8FA08]" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                            </svg>
-                        ))}
-                    </div>
+                        <div className="flex items-center justify-between gap-6">
+                            {/* Name with decorative arc */}
+                            <div className="relative flex flex-col items-start">
 
-                    {/* Navigation */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex gap-3">
-                            <button
-                                onClick={prevTestimonial}
-                                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D8FA08] hover:text-black hover:border-[#D8FA08] transition-all"
-                            >
-                                <ChevronLeft size={24} />
-                            </button>
-                            <button
-                                onClick={nextTestimonial}
-                                className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-[#D8FA08] hover:text-black hover:border-[#D8FA08] transition-all"
-                            >
-                                <ChevronRight size={24} />
-                            </button>
-                        </div>
+                                <span className="relative font-serif italic text-2xl sm:text-3xl text-white">
+                                   {current.name}
+                                </span>
+                                <span className="relative text-white/60 text-sm mt-1">
+                                    {current.position}
+                                </span>
+                            </div>
 
-                        {/* Dots */}
-                        <div className="flex gap-2">
-                            {testimonials.map((_, index) => (
+                            {/* Arrows */}
+                            <div className="flex gap-3 shrink-0">
                                 <button
-                                    key={index}
-                                    onClick={() => setCurrentIndex(index)}
-                                    className={`w-2 h-2 rounded-full transition-all ${
-                                        index === currentIndex
-                                            ? 'bg-[#D8FA08] w-8'
-                                            : 'bg-white/30 hover:bg-white/50'
-                                    }`}
-                                />
-                            ))}
+                                    onClick={prevTestimonial}
+                                    aria-label="Previous testimonial"
+                                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-[#D8FA08] hover:text-black hover:border-[#D8FA08] transition-all cursor-pointer"
+                                >
+                                    <ChevronLeft size={18} />
+                                </button>
+                                <button
+                                    onClick={nextTestimonial}
+                                    aria-label="Next testimonial"
+                                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-[#D8FA08] hover:text-black hover:border-[#D8FA08] transition-all cursor-pointer"
+                                >
+                                    <ChevronRight size={18} />
+                                </button>
+                            </div>
                         </div>
                     </div>
+                </div>
+
+                {/* Footer row: partner logos only */}
+                <div className="flex flex-wrap items-center justify-between sm:justify-start gap-x-8 gap-y-4 md:gap-x-14">
+                    {partners.map((p) => (
+                        <img
+                            key={p.name}
+                            src={p.src}
+                            alt={p.name}
+                            className="h-5 sm:h-6 md:h-7 w-auto object-contain opacity-90"
+                        />
+                    ))}
                 </div>
             </div>
         </div>
