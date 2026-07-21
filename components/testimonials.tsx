@@ -102,16 +102,16 @@ const Testimonials = () => {
                 </div>
 
                 {/* Footer row: partner logos only */}
-                <div className="flex flex-wrap items-center justify-between sm:justify-start gap-x-8 gap-y-4 md:gap-x-14">
-                    {partners.map((p) => (
-                        <img
-                            key={p.name}
-                            src={p.src}
-                            alt={p.name}
-                            className="h-5 sm:h-6 md:h-7 w-auto object-contain opacity-90"
-                        />
-                    ))}
-                </div>
+                {/*<div className="flex flex-wrap items-center justify-between sm:justify-start gap-x-8 gap-y-4 md:gap-x-14">*/}
+                {/*    {partners.map((p) => (*/}
+                {/*        <img*/}
+                {/*            key={p.name}*/}
+                {/*            src={p.src}*/}
+                {/*            alt={p.name}*/}
+                {/*            className="h-5 sm:h-6 md:h-7 w-auto object-contain opacity-90"*/}
+                {/*        />*/}
+                {/*    ))}*/}
+                {/*</div>*/}
             </div>
         </div>
     );

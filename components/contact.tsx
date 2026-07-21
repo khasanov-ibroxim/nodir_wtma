@@ -149,7 +149,7 @@ const Contact = () => {
                                     type="submit"
                                     className="inline-flex items-center gap-2 sm:gap-3 bg-[#D8FA08] text-black text-xs sm:text-sm font-bold tracking-wider uppercase px-8 sm:px-10 py-4 sm:py-5 hover:bg-[#c5e607] transition-colors cursor-pointer"
                                 >
-                                    Send Request
+                                    Отправить заявку
                                     <ArrowUpRight size={18} />
                                 </button>
                             </form>

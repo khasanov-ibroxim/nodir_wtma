@@ -4,9 +4,9 @@ import {Download} from 'lucide-react';
 const experiences = [
     {
         id: 1,
-        years: "2005 — 2006",
-        role: "Supply Specialist",
-        description: "Bektemir Cotton Processing Plant Организация снабжения и участие в производственных процессах.\n",
+        years: "2005-2006",
+        role: "Специалист по снабжению",
+        description: "Акционерное общество “Бектемирский хлопкоочистительный завод”",
         logo: (
             <svg viewBox="0 0 100 60" width="70" height="42" fill="none">
                 <text x="0" y="48" fontSize="52" fontWeight="700" fill="#0057ff" fontFamily="Arial">Bē</text>
@@ -16,8 +16,8 @@ const experiences = [
     {
         id: 2,
         years: "2006 — 2010",
-        role: "Bachelor’s Degree",
-        description: "Tashkent Institute of Textile and Light Industry Специализация в области текстильной промышленности и экономики отрасли.\n",
+        role: "Высшее образование (бакалавр)",
+        description: "Ташкентский институт текстильной и лёгкой промышленности",
         logo: (
             <div style={{
                 width: 48, height: 48, borderRadius: 10,
@@ -34,10 +34,8 @@ const experiences = [
     {
         id: 3,
         years: "2010 — 2013",
-        role: "Procurement Specialist",
-        description: "Uzpakhtasanoat Association\n" +
-            "Работа с поставщиками и организация закупочных процессов.\n" +
-            "Контроль логистики и обеспечение бесперебойных поставок сырья.\n",
+        role: "Специалист отдела заготовки",
+        description: "Ассоциация “Узпахтасаноат”",
         logo: (
             <div style={{
                 width: 48, height: 48, borderRadius: 10,
@@ -52,11 +50,8 @@ const experiences = [
     {
         id: 4,
         years: "2013 — 2017",
-        role: "Head of Sales Department",
-        description: `Zangata Imkon Mebel
-Управление отделом продаж, увеличение объёмов реализации и развитие клиентской базы.
-Внедрение коммерческих стратегий и контроль выполнения KPI.
-`,
+        role: "Руководитель отдела продаж",
+        description: "ООО “Zangata Imkon Mebel”",
         logo: (
             <div style={{
                 width: 48, height: 48, borderRadius: 10,
@@ -71,8 +66,8 @@ const experiences = [
     {
         id: 5,
         years: "2017 — 2021",
-        role: "Lead Marketing & Advertising Specialist",
-        description: 'Uztextileprom Association',
+        role: "Руководитель отдела маркетинга и рекламы",
+        description: 'Ассоциация «Узтекстильпром»',
         logo: (
             <div style={{
                 width: 48, height: 48, borderRadius: 10,
@@ -86,12 +81,9 @@ const experiences = [
     },
     {
         id: 6,
-        years: "2022 — Present",
-        role: "Commercial Director",
-        description: `World Textile Marketing Agency
-Развитие продаж и международных проектов в текстильной индустрии.
-Организация участия в зарубежных выставках, привлечение иностранных байеров и выстраивание эффективной маркетинговой стратегии.
-`,
+        years: "2022 — настоящее время",
+        role: "Коммерческий директор",
+        description: `World Textile Marketing Agency`,
         logo: (
             <div style={{
                 width: 48, height: 48, borderRadius: 10,
@@ -108,7 +100,7 @@ const experiences = [
 const Experience = () => {
     return (
         <div
-            className="w-full h-full flex items-center justify-center px-5 sm:px-10 md:px-16 lg:px-20 pt-28"
+            className="w-full h-full flex items-center justify-center px-5 sm:px-10 md:px-16 lg:px-20 pt-28 "
             style={{background: '#0d0d0d'}}
         >
             <div className="w-full max-w-7xl">
@@ -116,7 +108,7 @@ const Experience = () => {
                 {/* Header */}
                 <div className="flex flex-wrap justify-between items-center gap-4 mb-8 md:mb-14">
                     <h1 className="text-white font-bold m-0" style={{fontSize: 'clamp(2rem, 5vw, 4rem)'}}>
-                        Experience
+                        Опыт работы
                     </h1>
                     <a
                         href="#"
@@ -139,22 +131,6 @@ const Experience = () => {
                                  }}
                             >
                                 {/* Logo + years+role on mobile: row */}
-                                <div className="flex items-center gap-4 sm:gap-0 sm:w-36 md:w-44 shrink-0">
-                                    {exp.logo}
-                                    {/* Years + role shown inline on mobile */}
-                                    <div className="sm:hidden">
-                                        <p style={{
-                                            color: 'rgba(255,255,255,0.45)',
-                                            fontSize: '0.78rem',
-                                            margin: '0 0 0.25rem 0'
-                                        }}>
-                                            {exp.years}
-                                        </p>
-                                        <h3 style={{color: 'white', fontSize: '1.05rem', fontWeight: 700, margin: 0}}>
-                                            {exp.role}
-                                        </h3>
-                                    </div>
-                                </div>
 
                                 {/* Years + role — hidden on mobile, shown sm+ */}
                                 <div className="hidden sm:block flex-1 min-w-0">

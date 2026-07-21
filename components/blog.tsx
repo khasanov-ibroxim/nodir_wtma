@@ -2,27 +2,32 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
 
+import d1 from "@/assets/diplom/diplom_1.png"
+import d2 from "@/assets/diplom/diplom_2.png"
+import d3 from "@/assets/diplom/diplom_3.png"
+import Image from "next/image";
+
 const blogPosts = [
     {
         id: 1,
-        title: "Директор по продажам — разработка стратегии продаж и управление коммерческой деятельностью",
-        category: "Professional Education City Business School ",
+        title: "Директор по продажам",
+        category: "",
         date: "2024–2025",
-        image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&q=80",
+        image: d1,
     },
     {
         id: 2,
-        title: "Курс по таргетированной рекламе и цифровому маркетингу",
-        category: "Space Academy ",
+        title: "Таргетинг",
+        category: "",
         date: "2024",
-        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+        image: d2,
     },
     {
         id: 3,
-        title: "Мобильная фотография и визуальное производство",
-        category: "Content Creation Course ",
+        title: "Мобилография",
+        category: "",
         date: "2023",
-        image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
+        image: d3,
     },
 ];
 
@@ -46,21 +51,21 @@ const Blog = () => {
             <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10 content-start">
                 {blogPosts.map((post) => (
                     <article key={post.id} className="group cursor-pointer">
-                        <div className="w-full aspect-[2/5] sm:aspect-[3/2] overflow-hidden">
-                            <img
+                        <div className="w-full aspect-[2/5] sm:aspect-[3/3] overflow-hidden">
+                            <Image
                                 src={post.image}
                                 alt={post.title}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500"
                             />
                         </div>
 
                         <div className="mt-4 sm:mt-5 flex items-center gap-2 text-white/50 text-xs sm:text-sm">
-                            <span>{post.category}</span>
-                            <span>/</span>
+                            {/*<span>{post.category}</span>*/}
+                            {/*<span>/</span>*/}
                             <span>{post.date}</span>
                         </div>
 
-                        <h3 className="mt-2 text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-[#D8FA08] transition-colors">
+                        <h3 className="mt-2 mb-20 text-lg sm:text-xl md:text-2xl font-bold text-white group-hover:text-[#D8FA08] transition-colors">
                             {post.title}
                         </h3>
                     </article>

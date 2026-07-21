@@ -3,11 +3,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image, {StaticImageData} from "next/image";
 
 import bg from "@/assets/portfolio/portfolio_bg.jpg"
-import i1 from "@/assets/portfolio/imgi_4_work-1.jpg"
-import i2 from "@/assets/portfolio/imgi_5_work-2.jpg"
-import i3 from "@/assets/portfolio/imgi_6_work-3.jpg"
-import i4 from "@/assets/portfolio/imgi_7_work-4.jpg"
-import i5 from "@/assets/portfolio/imgi_8_work-5.jpg"
+import i1 from "@/assets/portfolio/chust.png"
+import i2 from "@/assets/portfolio/osborn.png"
+import i3 from "@/assets/portfolio/zelal.png"
+import i4 from "@/assets/portfolio/kh.png"
+import i5 from "@/assets/portfolio/bakan.png"
 
 
 interface PortfolioItem {
@@ -158,6 +158,7 @@ const Portfolio = () => {
                     transition: 'opacity 0.3s ease',
                     width: 400,
                     height: 400,
+
                 }}
             >
                 <div style={{
@@ -168,13 +169,14 @@ const Portfolio = () => {
                     border: '2px solid rgba(255,255,255,0.15)',
                     boxShadow: '0 0 50px rgba(216,250,8,0.1)',
                     position: 'relative',
+                    backgroundColor: 'rgba(255,255,255)',
                 }}>
                     {isHovered && (
                         <Image
                             src={portfolioItems[hoveredIndex! % portfolioItems.length].image}
                             alt={portfolioItems[hoveredIndex! % portfolioItems.length].title}
                             fill
-                            style={{ objectFit: 'cover' }}
+                            style={{ objectFit: 'contain' }}
                         />
                     )}
                 </div>

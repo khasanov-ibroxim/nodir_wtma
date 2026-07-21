@@ -213,7 +213,7 @@ const VerticalScrollPage = () => {
             {/* Navbar */}
             <nav className="fixed top-0 left-0 right-0 z-50 px-8 py-6 flex justify-between items-center border-amber-50/50 border-b ">
                 <div className="text-white text-2xl font-serif italic">
-                    <span className="font-light">_</span>Roger
+
                 </div>
 
                 <button
@@ -240,11 +240,9 @@ const VerticalScrollPage = () => {
                                 <span className={`w-8 h-0.5 bg-white transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
                             </button>
                             <nav className="pl-1 pt-15 lg:pl-0 lg:pr-12 pb-8">
-                                <div className="flex gap-6 mb-12 text-sm">
-                                    <button className="text-lime-400 font-semibold">EN</button>
-                                    <button className="text-white/60 hover:text-white transition-colors">FR</button>
-                                    <button className="text-white/60 hover:text-white transition-colors">DE</button>
-                                </div>
+                                {/*<div className="flex gap-6 mb-12 text-sm">*/}
+                                {/*    <button className="text-lime-400 font-semibold">RU</button>*/}
+                                {/*</div>*/}
 
                                 <ul className="space-y-4 lg:space-y-6">
                                     {menuItems.map((item) => (
